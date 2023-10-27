@@ -1130,4 +1130,12 @@ GROUP BY country
 HAVING COUNT(*) BETWEEN 2 and 7 -- condicion especifica q usualmente esta aplicada a Aggregate Functions MAX, COUNT, etc 
 ORDER BY COUNT(*) DESC;
 
-SELECT country FROM users WHERE country='Iceland'
+SELECT country FROM users WHERE country='Iceland';
+
+SELECT country FROM users;
+SELECT 
+COUNT(*) as conteo, country 
+FROM users 
+GROUP BY country
+HAVING country = 'Iceland' -- condicion especifica q usualmente esta aplicada a Aggregate Functions MAX, COUNT, etc 
+ORDER BY COUNT(*) DESC;
