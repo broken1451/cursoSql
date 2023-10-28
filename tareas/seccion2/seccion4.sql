@@ -1109,7 +1109,7 @@ WHERE
 GROUP BY followers ORDER BY followers DESC;
 
 
--- Operadores HAVVING trabaja con GROUP BY
+-- Operadores HAVING trabaja con GROUP BY
 SELECT 
 COUNT(*), country 
 FROM users 
@@ -1139,3 +1139,82 @@ FROM users
 GROUP BY country
 HAVING country = 'Iceland' -- condicion especifica q usualmente esta aplicada a Aggregate Functions MAX, COUNT, etc 
 ORDER BY COUNT(*) DESC;
+
+
+-- Operadores DISTINCT - son unicos y no repetidos
+SELECT DISTINCT country FROM users;
+
+
+-- GROUP BY  con funciones
+SELECT 
+     email,
+     SUBSTRING(email, POSITION('@' IN email) + 1) as dominioSinReplace,
+     REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','') as dominio
+FROM 
+    users;
+
+SELECT count(*) FROM users;
+
+SELECT 
+     COUNT(*),
+     SUBSTRING(email, POSITION('@' IN (email)) + 1) as dominioSinReplace,
+     REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','') as dominio,
+     37 as edad
+FROM 
+    users
+GROUP BY 
+         SUBSTRING(email, POSITION('@' IN (email)) + 1),
+         REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','')
+HAVING count(*) > 1
+ORDER BY 
+         REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','')  ASC;
+
+
+-- GROUP BY  con funciones y subqueries
+SELECT 
+     email,
+     SUBSTRING(email, POSITION('@' IN email) + 1) as dominioSinReplace,
+     REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','') as dominio
+FROM 
+    users;
+
+SELECT count(*) FROM users;
+
+SELECT 
+    dominio,
+    total
+from
+(SELECT 
+     COUNT(*) as total,
+     SUBSTRING(email, POSITION('@' IN (email)) + 1) as dominioSinReplace,
+     REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','') as dominio,
+     37 as edad,
+     'adrian' as name
+FROM 
+    users
+GROUP BY 
+         SUBSTRING(email, POSITION('@' IN (email)) + 1),
+         REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','')
+HAVING count(*) > 1
+ORDER BY 
+         REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','')  ASC) as email_domains;
+
+SELECT 
+    SUM(total) as sumaTotal
+from
+(SELECT 
+     COUNT(*) as total,
+     SUBSTRING(email, POSITION('@' IN (email)) + 1) as dominioSinReplace,
+     REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','') as dominio,
+     37 as edad,
+     'adrian' as name
+FROM 
+    users
+GROUP BY 
+         SUBSTRING(email, POSITION('@' IN (email)) + 1),
+         REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','')
+HAVING count(*) > 1
+ORDER BY 
+         REPLACE(SUBSTRING(email, POSITION('@' IN (email)) ),'@','')  ASC) as email_domains;
+-- GROUP BY dominio, total 
+-- HAVING total > 1;  
