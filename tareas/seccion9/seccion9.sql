@@ -60,6 +60,6 @@ select currval('user_sequence') as valor_anterior_secuencia,
 create table users8(
 	user_id integer primary key default nextval('user_sequence'),
 	username varchar
-)
+) 
 
 
