@@ -38,5 +38,28 @@ create table userDual (
 )
 
 
----------
 -- uuids
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+DROP EXTENSION "uuid-ossp";
+select   gen_random_uuid(), uuid_generate_v4()
+
+CREATE TABLE public.users5 (
+	user_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	username varchar NULL,
+	CONSTRAINT users5_pkey PRIMARY KEY (user_id)
+);
+
+
+--- secuencias
+create SEQUENCE user_sequence;
+drop SEQUENCE user_sequence;
+select currval('user_sequence') as valor_anterior_secuencia,  
+	   nextval('user_sequence') as secuencia, 
+	   currval('user_sequence') as valor_actual_secuencia;
+
+create table users8(
+	user_id integer primary key default nextval('user_sequence'),
+	username varchar
+)
+
+
